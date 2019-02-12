@@ -1,0 +1,13 @@
+.inputs-container {
+    margin: 20px auto;
+}
+
+.main-input {
+    height: 20px;
+    background: #F0F0F0;
+    border: 1px solid #DCDCDC;
+    border-radius: 3px;
+    padding: 10px;
+    width: 90%;
+    font-size: 14px;
+}

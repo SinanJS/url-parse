@@ -1,19 +1,20 @@
 {
-  "manifest_version": 2,
-  "name": "URL parser",
-  "version": "1.0",
-  "description": "自动格式化URL的参数",
-  "icons": {
-      "16": "images/icon16.png",
-      "48": "images/icon48.png",
-      "128": "images/icon128.png"
-  },
-  "browser_action": {
-      "default_icon": {
-          "16": "images/icon16.png",
-          "48": "images/icon48.png"
-      },
-      "default_title": "URL Parser",
-      "default_popup": "index.html"
-  }
+    "manifest_version": 2,
+    "name": "URL parser",
+    "version": "1.0",
+    "description": "自动格式化URL的参数",
+    "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
+    "icons": {
+        "16": "images/icon16.png",
+        "48": "images/icon48.png",
+        "128": "images/icon128.png"
+    },
+    "browser_action": {
+        "default_icon": {
+            "16": "images/icon16.png",
+            "48": "images/icon48.png"
+        },
+        "default_title": "URL Parser",
+        "default_popup": "index.html"
+    }
 }
