@@ -8,6 +8,18 @@
     border: 1px solid #DCDCDC;
     border-radius: 3px;
     padding: 10px;
-    width: 90%;
+    width: 80%;
     font-size: 14px;
+    margin-right: 10px;
+}
+.goto{
+    background: #1890ff;
+    color: #fff;
+    height: 42px;
+    width: 60px;
+    transform: translateY(-2px);
+    border-radius: 5px;
+    font-size: 14px;
+    border: 0px;
+    cursor: pointer;
 }

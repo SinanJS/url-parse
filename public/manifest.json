@@ -9,6 +9,15 @@
         "48": "images/icon48.png",
         "128": "images/icon128.png"
     },
+    "permissions": [
+        "tabs",
+        "activeTab",
+        "https://*/*",
+        "http://*/*",
+        "file://*/*",
+        "ftp://*/*",
+        "storage"
+    ],
     "browser_action": {
         "default_icon": {
             "16": "images/icon16.png",
