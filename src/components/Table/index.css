@@ -13,6 +13,7 @@ td {
     margin-bottom: 20px;
 }
 
+.key-input,
 .val-input {
     width: 98%;
     height: 100%;

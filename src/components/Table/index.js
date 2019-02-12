@@ -14,7 +14,9 @@ export default class Table extends Component {
     }
 
     state = {
-        dataFormated: {}
+        dataFormated: {},
+        newKey: '',
+        newVal: ''
     }
 
     handleCheck(key) {
@@ -25,6 +27,14 @@ export default class Table extends Component {
         this.setState({
             dataFormated
         });
+    }
+
+    handleInputChange = (key, e) => {
+        const { dataFormated } = this.state;
+        const { dataChange } = this.props;
+        dataFormated[key].value = e.target.value;
+        dataChange(cleanData(dataFormated));
+        this.setState({ dataFormated });
     }
 
     componentDidMount() {
@@ -38,12 +48,37 @@ export default class Table extends Component {
         });
     }
 
+    addNewKey = (e) => {
+        this.setState({
+            newKey: e.target.value
+        });
+    }
+
+    addNewVal = (e) => {
+        this.setState({
+            newVal: e.target.value
+        });
+    }
+
+    handleAddNewParam = () => {
+        const { dataFormated, newKey, newVal } = this.state;
+        const { dataChange } = this.props;
+        if (newKey && newVal) {
+            dataFormated[newKey] = {
+                checked: true,
+                value: newVal
+            }
+            dataChange(cleanData(dataFormated))
+            this.setState({
+                dataFormated,
+                newKey: '',
+                newVal: ''
+            });
+        }
+    }
 
     render() {
-        const { dataFormated } = this.state;
-        if (Object.keys(dataFormated).length === 0) {
-            return null;
-        }
+        const { dataFormated, newKey, newVal } = this.state;
         return (
             <div className="table-container">
                 <table className="params-table">
@@ -53,6 +88,8 @@ export default class Table extends Component {
                         <th>Value</th>
                     </tr>
                     {
+                        Object.keys(dataFormated).length > 0
+                        &&
                         Object.keys(dataFormated).map(key => {
                             return (
                                 <tr className="param-line">
@@ -66,12 +103,23 @@ export default class Table extends Component {
                                     </td>
                                     <td className="key-td">{key}</td>
                                     <td className="val-td">
-                                        <input className="val-input" type="text" value={dataFormated[key].value} />
+                                        <input className="val-input" type="text" value={dataFormated[key].value} onChange={this.handleInputChange.bind(this, key)} />
                                     </td>
                                 </tr>
                             );
                         })
                     }
+                    <tr className="new-line">
+                        <td className="check-td">
+                            <input type='checkbox' />
+                        </td>
+                        <td className="key-td">
+                            <input className="key-input" type="text" onChange={this.addNewKey} value={newKey} onBlur={this.handleAddNewParam} placeholder="New key" />
+                        </td>
+                        <td className="val-td">
+                            <input className="val-input" type="text" onChange={this.addNewVal} value={newVal} onBlur={this.handleAddNewParam} placeholder="New value" />
+                        </td>
+                    </tr>
                 </table>
             </div>
         );

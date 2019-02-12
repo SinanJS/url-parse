@@ -36,8 +36,10 @@ class App extends Component {
       <div className="App">
         <Inputs url={url} />
         {
-          Object.keys(params).length > 0 &&
+          Object.keys(params).length > 0 ?
           <Table data={params} dataChange={this.handleDataChange} />
+          :
+          <div>URL Parser: no params</div>
         }
       </div>
     );
