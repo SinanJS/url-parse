@@ -17,11 +17,15 @@ class Inputs extends Component {
         chrome.tabs.create({ url });
     }
 
+    handleBlur = () => {
+        console.log('blur')
+    }
+
     render() {
         const { url } = this.props;
         return (
             <div className="inputs-container">
-                <input className="main-input" value={url} />
+                <input className="main-input" value={url} onBlur={this.handleBlur} />
                 <button className="goto" onClick={this.goto}>转到</button>
             </div>
         );
