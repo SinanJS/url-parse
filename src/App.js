@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Inputs from './components/Inputs';
+import UrlShow from './components/UrlShow';
 import Table from './components/Table';
 import { getParamsFormURL, paramsToUrl } from './lib';
 import './App.css';
@@ -34,7 +35,7 @@ class App extends Component {
     const { url, params } = this.state;
     return (
       <div className="App">
-        <Inputs url={url} />
+        <UrlShow url={url} />
         {
           Object.keys(params).length > 0 ?
           <Table data={params} dataChange={this.handleDataChange} />

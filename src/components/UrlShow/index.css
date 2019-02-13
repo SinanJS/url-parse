@@ -1,0 +1,26 @@
+.inputs-container {
+    margin: 10px auto;
+}
+
+.show-box {
+    background: #f0f0f0;
+    border: 1px solid #dcdcdc;
+    border-radius: 3px;
+    padding: 10px;
+    width: 91%;
+    font-size: 14px;
+    text-align: left;
+    margin: 0 auto;
+}
+.btn-update{
+    background: #1890ff;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 14px;
+    border: 0;
+    cursor: pointer;
+    width: 91%;
+    margin: 0 auto;
+    padding: 10px 10px;
+    margin-top: 10px;
+}
