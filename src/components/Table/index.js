@@ -48,19 +48,21 @@ class Table extends Component {
         });
     }
 
-    handleAddNewParam = () => {
-        const { newKey, newVal } = this.state;
-        const { params } = this.store;
-        if (newKey && newVal) {
-            params[newKey] = {
-                checked: true,
-                value: newVal
+    handleAddNewParam = (e) => {
+        if ((e.type === 'blur') || (e.type === 'keypress' && e.key === 'Enter')) {
+            const { newKey, newVal } = this.state;
+            const { params } = this.store;
+            if (newKey && newVal) {
+                params[newKey] = {
+                    checked: true,
+                    value: newVal
+                }
+                this.store.setParams(params);
+                this.setState({
+                    newKey: '',
+                    newVal: '',
+                });
             }
-            this.store.setParams(params);
-            this.setState({
-                newKey: '',
-                newVal: '',
-            });
         }
     }
 
@@ -104,10 +106,10 @@ class Table extends Component {
                             <input type='checkbox' />
                         </td>
                         <td className="key-td">
-                            <input className="key-input" type="text" onChange={this.addNewKey} value={newKey} onBlur={this.handleAddNewParam} placeholder="New key" />
+                            <input className="key-input" type="text" onChange={this.addNewKey} value={newKey} onBlur={this.handleAddNewParam} onKeyPress={this.handleAddNewParam} placeholder="New key" />
                         </td>
                         <td className="val-td">
-                            <input className="val-input" type="text" onChange={this.addNewVal} value={newVal} onBlur={this.handleAddNewParam} placeholder="New value" />
+                            <input className="val-input" type="text" onChange={this.addNewVal} value={newVal} onBlur={this.handleAddNewParam} onKeyPress={this.handleAddNewParam} placeholder="New value" />
                         </td>
                     </tr>
                 </table>

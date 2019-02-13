@@ -39,6 +39,7 @@ class Store {
     setUrl(url) {
         this.url = url;
         this.params = getParamsFormURL(url);
+        console.log('ss',this.params)
     }
 
     @action

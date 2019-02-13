@@ -29,7 +29,7 @@ export const cleanData = (dataFormated) => {
 export const formatedData = (data) => {
     const dataFormated = {};
     Object.keys(data).forEach(key => {
-        let value = data[key];
+        let value = data[key] || '';
         dataFormated[key] = {
             checked: true,
             value
@@ -39,18 +39,13 @@ export const formatedData = (data) => {
 }
 
 export const paramsToUrl = (host, params) => {
-    let query = '?';
     const keys = Object.keys(params);
+    let query = '?';
     keys.forEach((key, index) => {
         if (params[key].checked === false) {
             return;
         }
-        if (index === keys.length - 1) {
-            query += `${key}=${params[key].value}`;
-        } else {
-            query += `${key}=${params[key].value}&`;
-        }
+        query += `${key}=${params[key].value}&`;
     });
-    console.log(`${host}${query}`)
-    return `${host}${query}`;
+    return `${host}${query.substr(0, query.length - 1)}`;
 }

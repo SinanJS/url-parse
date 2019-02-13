@@ -31,8 +31,7 @@ class UrlShow extends Component {
         const { url } = this.store;
         return (
             <div className="inputs-container">
-                <textarea className="show-content" spellCheck="false" onChange={this.onEditeUrl}>
-                    {url}
+                <textarea className="show-content" spellCheck="false" onChange={this.onEditeUrl} value={url}>
                 </textarea>
                 <div className="btn-update" onClick={this.update}>Update</div>
             </div>
