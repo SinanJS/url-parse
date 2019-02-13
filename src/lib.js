@@ -7,7 +7,10 @@ export const getParamsFormURL = (URL) => {
     if (query) {
         query.split('&').forEach(item => {
             const arr = item.split('=');
-            params[arr[0]] = arr[1];
+            params[arr[0]] = {
+                checked: true,
+                value: arr[1]
+            };
         });
     }
     return params;
@@ -39,10 +42,13 @@ export const paramsToUrl = (host, params) => {
     let query = '?';
     const keys = Object.keys(params);
     keys.forEach((key, index) => {
+        if (params[key].checked === false) {
+            return;
+        }
         if (index === keys.length - 1) {
-            query += `${key}=${params[key]}`;
+            query += `${key}=${params[key].value}`;
         } else {
-            query += `${key}=${params[key]}&`;
+            query += `${key}=${params[key].value}&`;
         }
     });
     console.log(`${host}${query}`)

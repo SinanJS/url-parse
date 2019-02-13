@@ -1,54 +1,39 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import { observer, inject } from 'mobx-react';
 import './index.css';
+
 const { chrome } = window;
 
+@inject('store')
+@observer
 class UrlShow extends Component {
-    static propTypes = {
-        url: PropTypes.string,
-        // content: PropTypes.string
-    }
 
-    static defaultProps = {
-        url: ''
-    }
-
-    state = {
-        url: this.props.url
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            url: nextProps.url
-        });
-    }
+    store = this.props.store;
 
     goto = () => {
-        const { url } = this.state;
+        const { url } = this.store;
         chrome.tabs.create({ url });
     }
 
     update = () => {
-        const { url } = this.state;
+        const { url } = this.store;
         chrome.tabs.update({
             url
         });
     }
 
     onEditeUrl = (e) => {
-        // console.log(e.target)
-        const newUrl = e.target.innerText;
-        console.log(newUrl)
+        const newUrl = e.target.value;
+        this.store.setUrl(newUrl);
     }
 
     render() {
-        const { url } = this.state;
+        const { url } = this.store;
         return (
             <div className="inputs-container">
-                {/* <input className="main-input" value={url} /> */}
-                <div className="show-box" contentEditable spellCheck="false" onInput={this.onEditeUrl}>
+                <textarea className="show-content" spellCheck="false" onChange={this.onEditeUrl}>
                     {url}
-                </div>
+                </textarea>
                 <div className="btn-update" onClick={this.update}>Update</div>
             </div>
         );
