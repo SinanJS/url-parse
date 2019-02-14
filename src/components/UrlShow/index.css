@@ -2,7 +2,7 @@
     margin: 10px auto;
 }
 
-.show-box {
+.show-content {
     background: #f0f0f0;
     border: 1px solid #dcdcdc;
     border-radius: 3px;
@@ -11,8 +11,15 @@
     font-size: 14px;
     text-align: left;
     margin: 0 auto;
+    height: 200px;
+    overflow-y: scroll;
 }
-.btn-update{
+
+.show-content::-webkit-scrollbar {
+    display: none;
+}
+
+.btn-update {
     background: #1890ff;
     color: #fff;
     border-radius: 5px;

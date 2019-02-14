@@ -4,13 +4,14 @@
 
 .main-input {
     height: 20px;
-    background: #F0F0F0;
-    border: 1px solid #DCDCDC;
+    background: #f0f0f0;
+    border: 1px solid #dcdcdc;
     border-radius: 3px;
     padding: 10px;
-    width: 80%;
+    width: 91%;
     font-size: 14px;
-    margin-right: 10px;
+    width: 91%;
+    font-size: 14px;
 }
 .goto{
     background: #1890ff;

@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { formatedData, cleanData } from '../../lib';
+// import { formatedData, cleanData } from '../../lib';
+import { observer, inject } from 'mobx-react';
 import './index.css';
 
-export default class Table extends Component {
+@inject('store')
+@observer
+class Table extends Component {
+    store = this.props.store
+
     static propTypes = {
         data: PropTypes.object.isRequired,
         dataChange: PropTypes.func
@@ -14,38 +19,21 @@ export default class Table extends Component {
     }
 
     state = {
-        dataFormated: {},
+        // params: {},
         newKey: '',
         newVal: ''
     }
 
     handleCheck(key) {
-        const { dataFormated } = this.state;
-        const { dataChange } = this.props;
-        dataFormated[key].checked = !dataFormated[key].checked;
-        dataChange(cleanData(dataFormated));
-        this.setState({
-            dataFormated
-        });
+        const { params } = this.store;
+        params[key].checked = !params[key].checked;
+        this.store.setParams(params);
     }
 
     handleInputChange = (key, e) => {
-        const { dataFormated } = this.state;
-        const { dataChange } = this.props;
-        dataFormated[key].value = e.target.value;
-        dataChange(cleanData(dataFormated));
-        this.setState({ dataFormated });
-    }
-
-    componentDidMount() {
-        const { data } = this.props;
-        if (Object.keys(data).length === 0) {
-            return;
-        }
-        const dataFormated = formatedData(data);
-        this.setState({
-            dataFormated
-        });
+        const { params } = this.store;
+        params[key].value = e.target.value;
+        this.store.setParams(params);
     }
 
     addNewKey = (e) => {
@@ -60,25 +48,27 @@ export default class Table extends Component {
         });
     }
 
-    handleAddNewParam = () => {
-        const { dataFormated, newKey, newVal } = this.state;
-        const { dataChange } = this.props;
-        if (newKey && newVal) {
-            dataFormated[newKey] = {
-                checked: true,
-                value: newVal
+    handleAddNewParam = (e) => {
+        if ((e.type === 'blur') || (e.type === 'keypress' && e.key === 'Enter')) {
+            const { newKey, newVal } = this.state;
+            const { params } = this.store;
+            if (newKey && newVal) {
+                params[newKey] = {
+                    checked: true,
+                    value: newVal
+                }
+                this.store.setParams(params);
+                this.setState({
+                    newKey: '',
+                    newVal: '',
+                });
             }
-            dataChange(cleanData(dataFormated))
-            this.setState({
-                dataFormated,
-                newKey: '',
-                newVal: ''
-            });
         }
     }
 
     render() {
-        const { dataFormated, newKey, newVal } = this.state;
+        const { newKey, newVal } = this.state;
+        const { params } = this.store;
         return (
             <div className="table-container">
                 <table className="params-table">
@@ -88,14 +78,16 @@ export default class Table extends Component {
                         <th>Value</th>
                     </tr>
                     {
-                        Object.keys(dataFormated).length > 0
+                        params
                         &&
-                        Object.keys(dataFormated).map(key => {
+                        Object.keys(params).length > 0
+                        &&
+                        Object.keys(params).map(key => {
                             return (
                                 <tr className="param-line">
                                     <td className="check-td">
                                         {
-                                            dataFormated[key].checked ?
+                                            params[key].checked ?
                                                 <input type='checkbox' checked onChange={this.handleCheck.bind(this, key)} />
                                                 :
                                                 <input type='checkbox' onChange={this.handleCheck.bind(this, key)} />
@@ -103,7 +95,7 @@ export default class Table extends Component {
                                     </td>
                                     <td className="key-td">{key}</td>
                                     <td className="val-td">
-                                        <input className="val-input" type="text" value={dataFormated[key].value} onChange={this.handleInputChange.bind(this, key)} />
+                                        <input className="val-input" type="text" value={params[key].value} onChange={this.handleInputChange.bind(this, key)} />
                                     </td>
                                 </tr>
                             );
@@ -114,10 +106,10 @@ export default class Table extends Component {
                             <input type='checkbox' />
                         </td>
                         <td className="key-td">
-                            <input className="key-input" type="text" onChange={this.addNewKey} value={newKey} onBlur={this.handleAddNewParam} placeholder="New key" />
+                            <input className="key-input" type="text" onChange={this.addNewKey} value={newKey} onBlur={this.handleAddNewParam} onKeyPress={this.handleAddNewParam} placeholder="New key" />
                         </td>
                         <td className="val-td">
-                            <input className="val-input" type="text" onChange={this.addNewVal} value={newVal} onBlur={this.handleAddNewParam} placeholder="New value" />
+                            <input className="val-input" type="text" onChange={this.addNewVal} value={newVal} onBlur={this.handleAddNewParam} onKeyPress={this.handleAddNewParam} placeholder="New value" />
                         </td>
                     </tr>
                 </table>
@@ -125,3 +117,4 @@ export default class Table extends Component {
         );
     }
 }
+export default Table;

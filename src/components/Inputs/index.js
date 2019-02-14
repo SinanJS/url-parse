@@ -1,30 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { observer, inject } from 'mobx-react';
 import './index.css';
 const { chrome } = window;
+@inject('store')
+@observer
 class Inputs extends Component {
-    static propTypes = {
-        url: PropTypes.string,
-        // content: PropTypes.string
-    }
+    store = this.props.store;
 
-    static defaultProps = {
-        url: ''
+    onFocus = () => {
+        this.store.setShowUrl(true);
     }
-
-    goto = () => {
-        const { url } = this.props;
-        chrome.tabs.create({ url });
-    }
-
-   
 
     render() {
-        const { url } = this.props;
+        const { url } = this.store;
         return (
             <div className="inputs-container">
-                <input className="main-input" value={url} />
-                <button className="goto" onClick={this.goto}>OPEN</button>
+                <input className="main-input" value={url} onFocus={this.onFocus} />
             </div>
         );
     }
