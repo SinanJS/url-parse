@@ -9,8 +9,12 @@ import './index.css';
 class Table extends Component {
     store = this.props.store
 
+    dragStartIndex = 0;
+
+    dragEndIndex = 0;
+
+
     static propTypes = {
-        data: PropTypes.object.isRequired,
         dataChange: PropTypes.func
     }
 
@@ -19,21 +23,28 @@ class Table extends Component {
     }
 
     state = {
-        // params: {},
+        allowDrag: false,
         newKey: '',
         newVal: ''
     }
 
-    handleCheck(key) {
-        const { params } = this.store;
-        params[key].checked = !params[key].checked;
-        this.store.setParams(params);
+    handleCheck(index) {
+        const { keys, values } = this.store;
+        console.log(values, index)
+        values[index].checked = !values[index].checked;
+        this.store.setKVarr(keys, values);
     }
 
-    handleInputChange = (key, e) => {
-        const { params } = this.store;
-        params[key].value = e.target.value;
-        this.store.setParams(params);
+    handleInputChange = (index, e) => {
+        const { keys, values } = this.store;
+        values[index].value = e.target.value;
+        this.store.setKVarr(keys, values);
+    }
+
+    handleInputKeyChange = (index, e) => {
+        const { keys, values } = this.store;
+        keys[index] = e.target.value;
+        this.store.setKVarr(keys, values);
     }
 
     addNewKey = (e) => {
@@ -51,13 +62,14 @@ class Table extends Component {
     handleAddNewParam = (e) => {
         if ((e.type === 'blur') || (e.type === 'keypress' && e.key === 'Enter')) {
             const { newKey, newVal } = this.state;
-            const { params } = this.store;
+            const { keys, values } = this.store;
             if (newKey && newVal) {
-                params[newKey] = {
+                values.push({
                     checked: true,
                     value: newVal
-                }
-                this.store.setParams(params);
+                });
+                keys.push(newKey);
+                this.store.setKVarr(keys, values);
                 this.setState({
                     newKey: '',
                     newVal: '',
@@ -66,9 +78,33 @@ class Table extends Component {
         }
     }
 
+
+
+    onDragStart = (index) => {
+        this.dragStartIndex = index;
+        this.dragging = true;
+    }
+
+    onDragEnd = () => {
+        const { exchParam } = this.store;
+        this.setState({
+            allowDrag: false
+        });
+        exchParam(this.dragStartIndex, this.dragEndIndex);
+    }
+
+    onDragOver = (index) => {
+        this.dragEndIndex = index;
+        this[`line${index}`].style.background = '#cdcdcd';
+    }
+
+    onDragLeave = (index) => {
+        this[`line${index}`].style.background = '#fff';
+    }
+
     render() {
-        const { newKey, newVal } = this.state;
-        const { params } = this.store;
+        const { newKey, newVal, allowDrag } = this.state;
+        const { keys, values } = this.store;
         return (
             <div className="table-container">
                 <table className="params-table">
@@ -78,24 +114,35 @@ class Table extends Component {
                         <th>Value</th>
                     </tr>
                     {
-                        params
+                        keys.length > 0
                         &&
-                        Object.keys(params).length > 0
-                        &&
-                        Object.keys(params).map(key => {
+                        keys.map((key, index) => {
                             return (
-                                <tr className="param-line">
-                                    <td className="check-td">
+                                <tr
+                                    className="param-line"
+                                    key={index}
+                                    draggable={allowDrag}
+                                    onDragStart={this.onDragStart.bind(this, index)}
+                                    onDragEnd={this.onDragEnd.bind(this, index)}
+                                    onDragOver={this.onDragOver.bind(this, index)}
+                                    onDragLeave={this.onDragLeave.bind(this, index)}
+                                    ref={(trDom => { this[`line${index}`] = trDom; })}
+                                >
+                                    <td
+                                        className="check-td"
+                                        onMouseDown={() => { this.setState({ allowDrag: true }) }}
+                                        onMouseUp={() => { this.setState({ allowDrag: false }) }}
+                                    >
+                                        <div className='bg-move'></div>
                                         {
-                                            params[key].checked ?
-                                                <input type='checkbox' checked onChange={this.handleCheck.bind(this, key)} />
-                                                :
-                                                <input type='checkbox' onChange={this.handleCheck.bind(this, key)} />
+                                            <input type='checkbox' checked={values[index].checked} onChange={this.handleCheck.bind(this, index)} />
                                         }
                                     </td>
-                                    <td className="key-td">{key}</td>
+                                    <td className="key-td">
+                                        <input className="val-input" type="text" value={keys[index]} onChange={this.handleInputKeyChange.bind(this, index)} />
+                                    </td>
                                     <td className="val-td">
-                                        <input className="val-input" type="text" value={params[key].value} onChange={this.handleInputChange.bind(this, key)} />
+                                        <input className="val-input" type="text" value={values[index].value} onChange={this.handleInputChange.bind(this, index)} />
                                     </td>
                                 </tr>
                             );
@@ -103,6 +150,7 @@ class Table extends Component {
                     }
                     <tr className="new-line">
                         <td className="check-td">
+                            <div className='bg-move'></div>
                             <input type='checkbox' />
                         </td>
                         <td className="key-td">
