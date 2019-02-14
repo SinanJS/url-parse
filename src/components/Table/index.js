@@ -59,6 +59,10 @@ class Table extends Component {
         });
     }
 
+    onFocus = (index) => {
+        this.props.onFocus(index);
+    }
+
     handleAddNewParam = (e) => {
         if ((e.type === 'blur') || (e.type === 'keypress' && e.key === 'Enter')) {
             const { newKey, newVal } = this.state;
@@ -139,10 +143,10 @@ class Table extends Component {
                                         }
                                     </td>
                                     <td className="key-td">
-                                        <input className="val-input" type="text" value={keys[index]} onChange={this.handleInputKeyChange.bind(this, index)} />
+                                        <input className="val-input" type="text" value={keys[index]} onChange={this.handleInputKeyChange.bind(this, index)} onFocus={this.onFocus.bind(this, index)} />
                                     </td>
                                     <td className="val-td">
-                                        <input className="val-input" type="text" value={values[index].value} onChange={this.handleInputChange.bind(this, index)} />
+                                        <input className="val-input" type="text" value={values[index].value} onChange={this.handleInputChange.bind(this, index)} onFocus={this.onFocus.bind(this, index)} />
                                     </td>
                                 </tr>
                             );

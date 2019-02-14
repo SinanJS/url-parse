@@ -9,15 +9,26 @@ import './App.css';
 @observer
 class App extends Component {
 
+  state = {
+    selectedIndex: -1
+  }
+
+  onFocus = (index) => {
+    this.setState({
+      selectedIndex: index
+    });
+  }
+
   render() {
     const { keys, ready } = this.props.store;
+    const { selectedIndex } = this.state;
     if (ready) {
       return (
         <div className="App">
-          <UrlShow />
+          <UrlShow selectedIndex={selectedIndex} />
           {
             keys.length > 0 ?
-              <Table />
+              <Table onFocus={this.onFocus} />
               :
               <div>URL Parser: no params</div>
           }

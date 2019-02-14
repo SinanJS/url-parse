@@ -10,6 +10,8 @@ class UrlShow extends Component {
 
     store = this.props.store;
 
+    editing = false;
+
     state = {
         urlForShow1: '',
         boldPart: '',
@@ -17,35 +19,39 @@ class UrlShow extends Component {
     }
 
     componentDidMount() {
-        const { seletedIndex } = this.props;
-        this.seleted(seletedIndex);
+        const { selectedIndex } = this.props;
+        this.seleted(selectedIndex);
     }
 
     componentWillReceiveProps(nextProps) {
-        const { seletedIndex } = nextProps;
-        this.seleted(seletedIndex);
+        console.log(nextProps.selectedIndex, this.editing)
+        if (!this.editing) {
+            const { selectedIndex } = nextProps;
+            this.seleted(selectedIndex);
+        }
     }
 
     seleted(index) {
         const { keys, values, host } = this.store;
-        let { urlForShow1, boldPart, urlForShow2 } = this.state;
+        let boldPart = '';
+        let urlForShow2 = '';
         let query = '?'
         for (let i = 0; i < keys.length; i++) {
             if (values[i].checked === false) {
                 return;
             }
             if (i === index) {
-                boldPart += `<b>${keys[i]}=${values[i].value}</b>&`;
+                boldPart += `${keys[i]}=${values[i].value}`;
             } else if (!boldPart) {
                 query += `${keys[i]}=${values[i].value}&`;
             } else {
-                urlForShow2 += `${keys[i]}=${values[i].value}&`;
+                urlForShow2 += `&${keys[i]}=${values[i].value}`;
             }
         }
         this.setState({
             urlForShow1: `${host}${query}`,
             boldPart,
-            urlForShow2: urlForShow2.substr(0, urlForShow2.length - 1)
+            urlForShow2
         });
     }
 
@@ -61,14 +67,20 @@ class UrlShow extends Component {
         });
     }
 
-    // onEditeUrl = (e) => {
-    //     const newUrl = e.target.value;
-    //     this.store.setUrl(newUrl);
-    // }
-
     onEditeUrl = (e) => {
+        this.seleted(-1);
         const newUrl = document.querySelector('#part-1').innerText + document.querySelector('#part-blod').innerText + document.querySelector('#part-2').innerText;
         this.store.setUrl(newUrl);
+    }
+
+    onFocus = () => {
+        this.editing = true;
+        console.log('onFocus')
+    }
+
+    onBlur = () => {
+        this.editing = false;
+        console.log('onBlur')
     }
 
     render() {
@@ -80,11 +92,12 @@ class UrlShow extends Component {
                 <div
                     className="show-content"
                     contentEditable
+                    onFocus={this.onFocus}
                     spellCheck="false"
                     onInput={this.onEditeUrl}
                 >
                     <span id='part-1'>{urlForShow1}</span>
-                    <span id='part-blod'>{boldPart}</span>
+                    <span id='part-blod' className="part-blod">{boldPart}</span>
                     <span id='part-2'>{urlForShow2}</span>
                 </div>
                 <div className="btn-update" onClick={this.update}>Update</div>
