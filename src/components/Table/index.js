@@ -142,7 +142,7 @@ class Table extends Component {
                                         <input className="val-input" type="text" value={keys[index]} onChange={this.handleInputKeyChange.bind(this, index)} />
                                     </td>
                                     <td className="val-td">
-                                        <input className="val-input" type="text" value={values[index].value} onChange={this.handleInputChange.bind(this, index)} />
+                                        <input className="val-input" type="text" value={decodeURIComponent(values[index].value)} onChange={this.handleInputChange.bind(this, index)} />
                                     </td>
                                 </tr>
                             );

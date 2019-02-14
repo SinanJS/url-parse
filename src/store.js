@@ -33,7 +33,7 @@ class Store {
     init = () => {
         chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, (tabs) => {
             const { url } = tabs[0];
-            this.url = url;
+            this.url = decodeURIComponent(url);
             // this.params = getParamsFromURL(url);
             this.host = url.split('?')[0];
             const { keys, values } = getArrFromURL(url);
