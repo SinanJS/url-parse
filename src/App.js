@@ -3,8 +3,6 @@ import UrlShow from './components/UrlShow';
 import Table from './components/Table';
 import { observer, inject } from 'mobx-react';
 import './App.css';
-import Inputs from './components/Inputs';
-import { paramsToUrl } from './lib';
 
 // const { chrome } = window;
 @inject("store")

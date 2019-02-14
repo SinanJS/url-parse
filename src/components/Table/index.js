@@ -41,6 +41,12 @@ class Table extends Component {
         this.store.setKVarr(keys, values);
     }
 
+    handleInputKeyChange = (index, e) => {
+        const { keys, values } = this.store;
+        keys[index] = e.target.value;
+        this.store.setKVarr(keys, values);
+    }
+
     addNewKey = (e) => {
         this.setState({
             newKey: e.target.value
@@ -84,13 +90,13 @@ class Table extends Component {
         exchParam(this.dragStartIndex, this.dragEndIndex);
     }
 
-    onDragOver = (index, e) => {
+    onDragOver = (index) => {
         this.dragEndIndex = index;
-        e.target.style.background = '#cdcdcd';
+        this[`line${index}`].style.background = '#cdcdcd';
     }
 
-    onDragLeave = (e) => {
-        e.target.style.background = '#fff';
+    onDragLeave = (index) => {
+        this[`line${index}`].style.background = '#fff';
     }
 
     render() {
@@ -116,7 +122,8 @@ class Table extends Component {
                                     onDragStart={this.onDragStart.bind(this, index)}
                                     onDragEnd={this.onDragEnd.bind(this, index)}
                                     onDragOver={this.onDragOver.bind(this, index)}
-                                    onDragLeave={this.onDragLeave}
+                                    onDragLeave={this.onDragLeave.bind(this, index)}
+                                    ref={(trDom => { this[`line${index}`] = trDom; })}
                                 >
                                     <td className="check-td">
                                         <img
@@ -125,13 +132,12 @@ class Table extends Component {
                                             alt="move"
                                         />
                                         {
-                                            values[index].checked ?
-                                                <input type='checkbox' checked onChange={this.handleCheck.bind(this, index)} />
-                                                :
-                                                <input type='checkbox' onChange={this.handleCheck.bind(this, index)} />
+                                            <input type='checkbox' checked={values[index].checked} onChange={this.handleCheck.bind(this, index)} />
                                         }
                                     </td>
-                                    <td className="key-td">{key}</td>
+                                    <td className="key-td">
+                                        <input className="val-input" type="text" value={keys[index]} onChange={this.handleInputKeyChange.bind(this, index)} />
+                                    </td>
                                     <td className="val-td">
                                         <input className="val-input" type="text" value={values[index].value} onChange={this.handleInputChange.bind(this, index)} />
                                     </td>

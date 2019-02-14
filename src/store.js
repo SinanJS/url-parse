@@ -75,6 +75,8 @@ class Store {
         const { keys, values } = this;
         exch(keys, i, j);
         exch(values, i, j);
+        // console.log(values);
+        this.url = `${arrToUrl(keys, values, this.host)}`;
     }
 
 }

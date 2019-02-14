@@ -88,7 +88,11 @@ export const arrToUrl = (keys, values, host) => {
 }
 
 export const exch = (arr, i, j) => {
-    const t = arr[i];
-    arr[i] = arr[j];
-    arr[j] = t;
+    let assign = false;
+    if (typeof arr[i] === 'object') {
+        assign = true;
+    }
+    const t = assign ? Object.assign({}, arr[i]) : arr[i];
+    arr[i] = assign ? Object.assign({}, arr[j]) : arr[j];
+    arr[j] = assign ? Object.assign({}, t) : t;
 }
