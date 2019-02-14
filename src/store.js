@@ -1,4 +1,4 @@
-import { observable, flow, action } from "mobx";
+import { observable, flow, action, values } from "mobx";
 import { getParamsFormURL, paramsToUrl } from './lib';
 
 const { chrome } = window;
@@ -17,7 +17,12 @@ class Store {
     @observable
     params = null;
 
-    
+    @observable
+    keys = [];
+
+    @observable
+    values = [];
+
     @observable
     host = null;
 
@@ -31,6 +36,8 @@ class Store {
             this.url = url;
             this.params = getParamsFormURL(url);
             this.host = url.split('?')[0];
+            this.keys = Object.keys(this.params);
+            this.values = Object.values(this.params);
             this.ready = true;
         });
     })
@@ -39,7 +46,7 @@ class Store {
     setUrl(url) {
         this.url = url;
         this.params = getParamsFormURL(url);
-        console.log('ss',this.params)
+        console.log('ss', this.params)
     }
 
     @action
