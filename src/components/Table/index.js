@@ -13,7 +13,6 @@ class Table extends Component {
 
     dragEndIndex = 0;
 
-    dragging = false;
 
     static propTypes = {
         dataChange: PropTypes.func
@@ -24,6 +23,7 @@ class Table extends Component {
     }
 
     state = {
+        allowDrag: false,
         newKey: '',
         newVal: ''
     }
@@ -87,6 +87,9 @@ class Table extends Component {
 
     onDragEnd = () => {
         const { exchParam } = this.store;
+        this.setState({
+            allowDrag: false
+        });
         exchParam(this.dragStartIndex, this.dragEndIndex);
     }
 
@@ -100,7 +103,7 @@ class Table extends Component {
     }
 
     render() {
-        const { newKey, newVal } = this.state;
+        const { newKey, newVal, allowDrag } = this.state;
         const { keys, values } = this.store;
         return (
             <div className="table-container">
@@ -118,19 +121,19 @@ class Table extends Component {
                                 <tr
                                     className="param-line"
                                     key={index}
-                                    draggable
+                                    draggable={allowDrag}
                                     onDragStart={this.onDragStart.bind(this, index)}
                                     onDragEnd={this.onDragEnd.bind(this, index)}
                                     onDragOver={this.onDragOver.bind(this, index)}
                                     onDragLeave={this.onDragLeave.bind(this, index)}
                                     ref={(trDom => { this[`line${index}`] = trDom; })}
                                 >
-                                    <td className="check-td">
-                                        <img
-                                            src="/images/move.png"
-                                            className='move-img'
-                                            alt="move"
-                                        />
+                                    <td
+                                        className="check-td"
+                                        onMouseDown={() => { this.setState({ allowDrag: true }) }}
+                                        onMouseUp={() => { this.setState({ allowDrag: false }) }}
+                                    >
+                                        <div className='bg-move'></div>
                                         {
                                             <input type='checkbox' checked={values[index].checked} onChange={this.handleCheck.bind(this, index)} />
                                         }
@@ -147,11 +150,7 @@ class Table extends Component {
                     }
                     <tr className="new-line">
                         <td className="check-td">
-                            <img
-                                src="/images/move.png"
-                                className='move-img'
-                                alt="move"
-                            />
+                            <div className='bg-move'></div>
                             <input type='checkbox' />
                         </td>
                         <td className="key-td">

@@ -28,7 +28,7 @@ td {
     padding-right: 2px;
 }
 
-.param-line:hover .move-img {
+.param-line:hover .bg-move {
     visibility: visible;
 }
 
@@ -41,8 +41,14 @@ td {
     padding: 5px;
 }
 
-.move-img {
+.bg-move{
     width: 10px;
+    height: 10px;
+    background-image: url(/images/move.png);
+    background-position: 50%;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    display: inline-block;
     visibility: hidden;
     cursor: ns-resize;
 }
