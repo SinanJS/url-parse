@@ -11,21 +11,15 @@ import { paramsToUrl } from './lib';
 @observer
 class App extends Component {
 
-  handleDataChange = (newData) => {
-    const newUrl = paramsToUrl(this.host, newData);
-    const { store } = this.props;
-    store.setUrl(newUrl);
-  }
-
   render() {
-    const { params, ready } = this.props.store;
+    const { keys, ready } = this.props.store;
     if (ready) {
       return (
         <div className="App">
           <UrlShow />
           {
-            Object.keys(params).length > 0 ?
-              <Table dataChange={this.handleDataChange} />
+            keys.length > 0 ?
+              <Table />
               :
               <div>URL Parser: no params</div>
           }

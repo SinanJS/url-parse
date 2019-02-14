@@ -23,8 +23,13 @@ td {
 }
 
 .check-td {
-    width: 15px;
+    width: 30px;
     padding: 5px;
+    padding-right: 2px;
+}
+
+.param-line:hover .move-img {
+    visibility: visible;
 }
 
 .title-line>th {
@@ -34,6 +39,16 @@ td {
 .key-td {
     width: 20%;
     padding: 5px;
+}
+
+.move-img {
+    width: 10px;
+    visibility: hidden;
+    cursor: ns-resize;
+}
+
+.show {
+    visibility: visible;
 }
 
 .val-td {}

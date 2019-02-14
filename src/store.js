@@ -1,5 +1,5 @@
-import { observable, flow, action, values } from "mobx";
-import { getParamsFormURL, paramsToUrl } from './lib';
+import { observable, flow, action } from "mobx";
+import { exch, getArrFromURL, paramsToUrl, arrToUrl } from './lib';
 
 const { chrome } = window;
 
@@ -14,8 +14,8 @@ class Store {
     @observable
     url = null;
 
-    @observable
-    params = null;
+    // @observable
+    // params = null;
 
     @observable
     keys = [];
@@ -30,35 +30,53 @@ class Store {
     showUrl = false;
 
     @action
-    init = flow(() => {
+    init = () => {
         chrome.tabs.query({ 'active': true, 'lastFocusedWindow': true }, (tabs) => {
             const { url } = tabs[0];
             this.url = url;
-            this.params = getParamsFormURL(url);
+            // this.params = getParamsFromURL(url);
             this.host = url.split('?')[0];
-            this.keys = Object.keys(this.params);
-            this.values = Object.values(this.params);
+            const { keys, values } = getArrFromURL(url);
+            this.keys = keys;
+            this.values = values;
             this.ready = true;
         });
-    })
+    }
 
     @action
     setUrl(url) {
         this.url = url;
-        this.params = getParamsFormURL(url);
-        console.log('ss', this.params)
+        // this.params = getParamsFromURL(url);
+        const { keys, values } = getArrFromURL(url);
+        this.keys = keys;
+        this.values = values;
     }
 
+    // @action
+    // setParams(params) {
+    //     this.params = params;
+    //     this.url = `${paramsToUrl(params, this.host)}`;
+    // }
+
     @action
-    setParams(params) {
-        this.params = params;
-        this.url = `${paramsToUrl(this.host, params)}`;
+    setKVarr(keys, values) {
+        this.keys = keys;
+        this.values = values;
+        this.url = `${arrToUrl(keys, values, this.host)}`;
     }
 
     @action
     setShowUrl(boolval) {
         this.showUrl = !!boolval;
     }
+
+    @action
+    exchParam = (i, j) => {
+        const { keys, values } = this;
+        exch(keys, i, j);
+        exch(values, i, j);
+    }
+
 }
 
 const store = new Store();

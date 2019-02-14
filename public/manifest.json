@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "URL parser",
-    "version": "1.0",
+    "version": "2.0.1",
     "description": "自动格式化URL的参数",
     "content_security_policy": "script-src 'self' https://ajax.googleapis.com; object-src 'self'",
     "icons": {
