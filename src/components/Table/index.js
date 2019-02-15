@@ -30,7 +30,7 @@ class Table extends Component {
 
     handleCheck(index) {
         const { keys, values } = this.store;
-        console.log(values, index)
+        // console.log(values, index)
         values[index].checked = !values[index].checked;
         this.store.setKVarr(keys, values);
     }

@@ -13,51 +13,25 @@ class UrlShow extends Component {
     editing = false;
 
     state = {
-        urlForShow1: '',
-        boldPart: '',
-        urlForShow2: ''
+        host: this.store.host,
+        keys: this.store.keys,
+        values: this.store.values
     }
-
-    componentDidMount() {
-        const { selectedIndex } = this.props;
-        this.seleted(selectedIndex);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps.selectedIndex, this.editing)
-        if (!this.editing) {
-            const { selectedIndex } = nextProps;
-            this.seleted(selectedIndex);
-        }
-    }
-
-    seleted(index) {
-        const { keys, values, host } = this.store;
-        let boldPart = '';
-        let urlForShow2 = '';
-        let query = '?'
-        for (let i = 0; i < keys.length; i++) {
-            if (values[i].checked === false) {
-                return;
-            }
-            if (i === index) {
-                boldPart += `${keys[i]}=${values[i].value}`;
-            } else if (!boldPart) {
-                query += `${keys[i]}=${values[i].value}&`;
-            } else {
-                urlForShow2 += `&${keys[i]}=${values[i].value}`;
-            }
-        }
-        this.setState({
-            urlForShow1: `${host}${query}`,
-            boldPart,
-            urlForShow2
-        });
-    }
-
     goto = () => {
         const { url } = this.store;
         chrome.tabs.create({ url });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        console.log(this.editing)
+        if (this.editing === false) {
+            const { host, keys, values } = nextProps.store;
+            this.setState({
+                host,
+                keys,
+                values
+            });
+        }
     }
 
     update = () => {
@@ -68,40 +42,54 @@ class UrlShow extends Component {
     }
 
     onEditeUrl = (e) => {
-        this.seleted(-1);
-        const newUrl = document.querySelector('#part-1').innerText + document.querySelector('#part-blod').innerText + document.querySelector('#part-2').innerText;
+        const newUrl = e.target.innerText;
+        // console.log(newUrl);
         this.store.setUrl(newUrl);
     }
 
-    onFocus = () => {
+    onEditeFocus = () => {
         this.editing = true;
-        console.log('onFocus')
     }
 
-    onBlur = () => {
+    onEditeBlur = () => {
         this.editing = false;
-        console.log('onBlur')
     }
 
     render() {
-        const { urlForShow1, boldPart, urlForShow2 } = this.state;
+        const { host, keys, values } = this.state;
+        const { selectedIndex } = this.props;
         return (
             <div className="inputs-container">
-                {/* <textarea className="show-content" spellCheck="false" onChange={this.onEditeUrl} value={urlForShow}>
-                </textarea> */}
                 <div
                     className="show-content"
                     contentEditable
-                    onFocus={this.onFocus}
                     spellCheck="false"
+                    onFocus={this.onEditeFocus}
+                    onBlur={this.onEditeBlur}
                     onInput={this.onEditeUrl}
                 >
-                    <span id='part-1'>{urlForShow1}</span>
-                    <span id='part-blod' className="part-blod">{boldPart}</span>
-                    <span id='part-2'>{urlForShow2}</span>
+                    <span>{host}</span>
+                    {
+                        keys.length > 0 && <span>?</span>
+                    }
+                    {
+                        keys.map((key, i) => {
+                            if (!values[i].checked) {
+                                return null;
+                            }
+                            return (
+                                <>
+                                    <span className={i === selectedIndex ? "bold-light key" : "key"}>{key}</span>
+                                    <span className={i === selectedIndex ? "bold-light" : ""}>{'='}</span>
+                                    <span className={i === selectedIndex ? "bold-light val" : "val"}>{values[i].value}</span>
+                                    {(i !== keys.length - 1) && <span>&</span>}
+                                </>
+                            )
+                        })
+                    }
                 </div>
                 <div className="btn-update" onClick={this.update}>Update</div>
-            </div >
+            </div>
         );
     }
 }
