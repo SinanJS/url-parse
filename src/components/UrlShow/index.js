@@ -17,6 +17,11 @@ class UrlShow extends Component {
         keys: this.store.keys,
         values: this.store.values
     }
+
+    receiveText() {
+        
+    }
+
     goto = () => {
         const { url } = this.store;
         chrome.tabs.create({ url });
