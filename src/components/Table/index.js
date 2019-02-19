@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import { formatedData, cleanData } from '../../lib';
+import UpdateBtn from '../UpdateBtn';
 import { observer, inject } from 'mobx-react';
 import './index.css';
 
@@ -146,7 +146,7 @@ class Table extends Component {
                                         <input className="val-input" type="text" value={keys[index]} onChange={this.handleInputKeyChange.bind(this, index)} onFocus={this.onFocus.bind(this, index)} />
                                     </td>
                                     <td className="val-td">
-                                        <input className="val-input" type="text" value={values[index].value} onChange={this.handleInputChange.bind(this, index)} onFocus={this.onFocus.bind(this, index)} />
+                                        <input className="val-input" type="text" value={decodeURIComponent(values[index].value)} onChange={this.handleInputChange.bind(this, index)} />
                                     </td>
                                 </tr>
                             );
@@ -165,6 +165,7 @@ class Table extends Component {
                         </td>
                     </tr>
                 </table>
+                <UpdateBtn />
             </div>
         );
     }

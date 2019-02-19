@@ -1,0 +1,12 @@
+.btn-update {
+    background: #1890ff;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 14px;
+    border: 0;
+    cursor: pointer;
+    width: 91%;
+    margin: 0 auto;
+    padding: 10px 10px;
+    margin-top: 10px;
+}
