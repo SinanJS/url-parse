@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-// import { formatedData, cleanData } from '../../lib';
+import UpdateBtn from '../UpdateBtn';
 import { observer, inject } from 'mobx-react';
 import './index.css';
 
@@ -161,6 +161,7 @@ class Table extends Component {
                         </td>
                     </tr>
                 </table>
+                <UpdateBtn />
             </div>
         );
     }

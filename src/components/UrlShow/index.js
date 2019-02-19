@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { observer, inject } from 'mobx-react';
+import UpdateBtn from '../UpdateBtn';
 import './index.css';
 
 const { chrome } = window;
@@ -33,7 +34,7 @@ class UrlShow extends Component {
             <div className="inputs-container">
                 <textarea className="show-content" spellCheck="false" onChange={this.onEditeUrl} value={url}>
                 </textarea>
-                <div className="btn-update" onClick={this.update}>Update</div>
+                <UpdateBtn />
             </div>
         );
     }

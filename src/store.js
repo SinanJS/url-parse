@@ -73,9 +73,20 @@ class Store {
     @action
     exchParam = (i, j) => {
         const { keys, values } = this;
-        exch(keys, i, j);
-        exch(values, i, j);
-        // console.log(values);
+        console.log(i, j);
+        if (i > j) {
+            for (; i > j; i--) {
+                exch(keys, i, i - 1);
+                exch(values, i, i - 1);
+            }
+        } else if (i < j) {
+            for (; i < j; i++) {
+                exch(keys, i, i + 1);
+                exch(values, i, i + 1);
+            }
+        }
+        this.keys = keys;
+        this.values = values;
         this.url = `${arrToUrl(keys, values, this.host)}`;
     }
 
