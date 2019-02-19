@@ -73,7 +73,6 @@ class Store {
     @action
     exchParam = (i, j) => {
         const { keys, values } = this;
-        console.log(i, j);
         if (i > j) {
             for (; i > j; i--) {
                 exch(keys, i, i - 1);
