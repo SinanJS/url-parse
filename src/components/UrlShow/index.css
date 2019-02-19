@@ -20,6 +20,11 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.bold-light{
+    font-weight: 700;
+    color: #1890ff;
+}
+
 .show-content::-webkit-scrollbar {
     display: none;
 }

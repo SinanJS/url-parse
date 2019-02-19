@@ -30,7 +30,7 @@ class Table extends Component {
 
     handleCheck(index) {
         const { keys, values } = this.store;
-        console.log(values, index)
+        // console.log(values, index)
         values[index].checked = !values[index].checked;
         this.store.setKVarr(keys, values);
     }
@@ -57,6 +57,10 @@ class Table extends Component {
         this.setState({
             newVal: e.target.value
         });
+    }
+
+    onFocus = (index) => {
+        this.props.onFocus(index);
     }
 
     handleAddNewParam = (e) => {
@@ -139,7 +143,7 @@ class Table extends Component {
                                         }
                                     </td>
                                     <td className="key-td">
-                                        <input className="val-input" type="text" value={keys[index]} onChange={this.handleInputKeyChange.bind(this, index)} />
+                                        <input className="val-input" type="text" value={keys[index]} onChange={this.handleInputKeyChange.bind(this, index)} onFocus={this.onFocus.bind(this, index)} />
                                     </td>
                                     <td className="val-td">
                                         <input className="val-input" type="text" value={decodeURIComponent(values[index].value)} onChange={this.handleInputChange.bind(this, index)} />
